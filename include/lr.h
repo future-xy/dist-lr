@@ -5,51 +5,61 @@
 
 namespace distlr {
 
-class LR {
-public:
-  explicit LR(int num_feature_dim, float learning_rate=0.001, float C_=1,
-              int random_state=0);
-  virtual ~LR() {
-    if (kv_) {
-      delete kv_;
-    }
-  }
+    class LR {
+    public:
+        explicit LR(int num_feature_dim, float learning_rate = 0.001, float C_ = 1,
+                    int random_state = 0);
 
-  void SetKVWorker(ps::KVWorker<float>* kv);
+        virtual ~LR() {
+            delete kv_;
+        }
 
-  void Train(DataIter& iter, int num_iter);
+        void SetKVWorker(ps::KVWorker<float> *kv);
 
-  void Test(DataIter& iter, int num_iter);
+        void SetRank(int rank);
 
-  std::vector<float> GetWeight();
+        void Train(DataIter &iter, int num_iter, int batch_size);
 
-  ps::KVWorker<float>* GetKVWorker();
+        void Test(DataIter &iter, int num_iter);
 
-  bool SaveModel(std::string& filename);
+        std::vector<float> GetWeight();
 
-  std::string DebugInfo();
+        ps::KVWorker<float> *GetKVWorker();
 
-private:
-  void InitWeight_();
+        bool SaveModel(std::string &filename);
 
-  int Predict_(std::vector<float> feature);
+        std::string DebugInfo();
 
-  float Sigmoid_(std::vector<float> feature);
+    private:
+        void InitWeight_();
 
-  void PullWeight_();
+        inline void LogWeight_(int length, int num_iter) {
+            std::cout << "[" << rank_ << "]-" << num_iter << ":";
+            for (int i = 0; i < length && i < num_feature_dim_; ++i) {
+                std::cout << weight_[i] << " ";
+            }
+            std::cout << std::endl;
+        }
 
-  void PushGradient_(const std::vector<float>& grad);
+        int Predict_(std::vector<float> feature);
 
-  int num_feature_dim_;
-  float learning_rate_;
-  float C_;
+        float Sigmoid_(std::vector<float> feature);
 
-  int random_state_;
+        void PullWeight_();
 
-  std::vector<float> weight_;
+        void PushGradient_(const std::vector<float> &grad);
 
-  ps::KVWorker<float>* kv_;
-};
+        int num_feature_dim_;
+        float learning_rate_;
+        float C_;
+
+        int random_state_;
+        int rank_;
+
+        std::vector<float> weight_;
+
+        ps::KVWorker<float> *kv_;
+    };
 
 }  // namespace distlr
 

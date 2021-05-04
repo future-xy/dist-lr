@@ -39,3 +39,10 @@
 # Generated dir
 /bin
 /build
+/cmake-build-debug
+
+# PS
+/ps-lite
+
+# JetBrains
+/.idea

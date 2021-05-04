@@ -6,15 +6,15 @@
 
 namespace distlr {
 
-std::vector<std::string> Split(std::string line, char sparator);
+    std::vector<std::string> Split(std::string line, char separator);
 
-int ToInt(const char* str);
+    int ToInt(const char *str);
 
-int ToInt(const std::string& str);
+    int ToInt(const std::string &str);
 
-float ToFloat(const char* str);
+    float ToFloat(const char *str);
 
-float ToFloat(const std::string& str);
+    float ToFloat(const std::string &str);
 
 } // namespace distlr
 
