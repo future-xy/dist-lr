@@ -33,14 +33,6 @@ namespace distlr {
     private:
         void InitWeight_();
 
-        inline void LogWeight_(int length, int num_iter) {
-            std::cout << "[" << rank_ << "]-" << num_iter << ":";
-            for (int i = 0; i < length && i < num_feature_dim_; ++i) {
-                std::cout << weight_[i] << " ";
-            }
-            std::cout << std::endl;
-        }
-
         int Predict_(std::vector<float> feature);
 
         float Sigmoid_(std::vector<float> feature);
